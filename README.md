@@ -57,7 +57,7 @@ vault_1  | ==> Vault server started! Log data will stream in below:
 
 # Vault CLI
 
-
+```bash
 docker exec -it docker-vault_vault_1 sh
 
 
@@ -72,7 +72,7 @@ vault operator unseal $VAULT_UNSEAL_KEY
 vault login $VAULT_ROOT_TOKEN
 vault status
 vault operator migrate -config /vault/config/migrate.hcl
-
+```
 
 # Vault UI
 Browse http://localhost:8200/ui
