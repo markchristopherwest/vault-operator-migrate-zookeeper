@@ -1,4 +1,6 @@
 
 # Ignore txt
 **/*.db
+**/raft/raft
+**/raft/raft/snapshots
 **/*.txt
