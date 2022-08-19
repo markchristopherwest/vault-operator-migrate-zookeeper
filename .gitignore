@@ -1,0 +1,4 @@
+
+# Ignore txt
+**/*.db
+**/*.txt

@@ -58,20 +58,36 @@ vault_1  | ==> Vault server started! Log data will stream in below:
 # Vault CLI
 
 ```bash
-docker exec -it docker-vault_vault_1 sh
 
+docker-compose up -d zoo1 zoo2 zoo3 
+
+docker-compose up -d vault
+
+docker exec -it vault-operator-migrate-zookeeper_vault_1 sh
 
 export VAULT_ADDR=http://127.0.0.1:8200
-vault status
-vault operator init -key-shares=1 -key-threshold=1 > /tmp/vault.txt
-cat /tmp/vault.txt 
 
-export VAULT_ROOT_TOKEN=$(cat /tmp/vault.txt | grep '^Initial' | awk '{print $4}')
-export VAULT_UNSEAL_KEY=$(cat /tmp/vault.txt | grep '^Unseal Key 1' | awk '{print $4}')
-vault operator unseal $VAULT_UNSEAL_KEY
-vault login $VAULT_ROOT_TOKEN
 vault status
+
+vault operator init -key-shares=1 -key-threshold=1 > vault-operator-init.txt
+
+cat vault-operator-init.txt 
+
+export VAULT_ROOT_TOKEN=$(cat vault-operator-init.txt | grep '^Initial' | awk '{print $4}')
+
+export VAULT_UNSEAL_KEY=$(cat vault-operator-init.txt | grep '^Unseal Key 1' | awk '{print $4}')
+
+vault operator unseal $VAULT_UNSEAL_KEY
+
+vault login $VAULT_ROOT_TOKEN
+
+vault status
+
 vault operator migrate -config /vault/config/migrate.hcl
+
+exit
+
+ls -la raft
 ```
 
 # Vault UI
